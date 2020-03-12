@@ -73,6 +73,7 @@ direction_menu = [
 ]
 
 command = prompt(start_menu)["start"]
+os.system("cls")
 direction = ""
 
 # Write a loop that:
@@ -86,8 +87,9 @@ direction = ""
 #
 # If the user enters "q", quit the game.
 while not command == "Quit":
-    os.system("cls")
     print(Fore.LIGHTCYAN_EX + f"{player_one.name} " + Fore.RESET + f"moved {direction}")
+    print(Fore.LIGHTCYAN_EX + f"{player_one.name} " + Fore.RESET + "is in the " + Fore.GREEN + f"{player_one.location.name}")
+    print(Fore.YELLOW + f"{player_one.location}")
 
     command = prompt(main_menu)["menu"]
 
@@ -96,37 +98,34 @@ while not command == "Quit":
         command = prompt(main_menu)["menu"]
 
     if command == "Look":
-        print(Fore.LIGHTCYAN_EX + f"{player_one.name} " + Fore.RESET + "is in the " + Fore.GREEN + f"{player_one.location.name}")
-        print(Fore.YELLOW + f"{player_one.location}")
-
         command = prompt(main_menu)["menu"]
 
     if command == "Move":
         direction = prompt(direction_menu)["direction"]
         if direction == "North":
+            os.system("cls")
             try:
                 player_one.location = player_one.location.n_to
             except:
-                print("There is nowhere to go here!")
-                direction = prompt(direction_menu)["direction"]
+                print(Fore.RED + "There is nowhere to go here!")
         elif direction == "East":
+            os.system("cls")
             try:
                 player_one.location = player_one.location.e_to
             except:
-                print("There is nowhere to go here!")
-                direction = prompt(direction_menu)["direction"]
+                print(Fore.RED + "There is nowhere to go here!")
         elif direction == "South":
+            os.system("cls")
             try:
                 player_one.location = player_one.location.s_to
             except:
-                print("There is nowhere to go here!")
-                direction = prompt(direction_menu)["direction"]
+                print(Fore.RED + "There is nowhere to go here!")
         elif direction == "West":
+            os.system("cls")
             try:
                 player_one.location = player_one.location.w_to
             except:
-                print("There is nowhere to go here!")
-                direction = prompt(direction_menu)["direction"]
+                print(Fore.RED + "There is nowhere to go here!")
         elif direction == "Back to Menu":
             direction = ""
             command = prompt(main_menu)["menu"]
