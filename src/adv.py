@@ -1,6 +1,11 @@
 from room import Room
-
+from player import Player
+from PyInquirer import prompt
+from colorama import init, Fore, Style
+import os
 # Declare all the rooms
+
+init(autoreset=True)
 
 room = {
     'outside':  Room("Outside Cave Entrance",
@@ -36,8 +41,39 @@ room['treasure'].s_to = room['narrow']
 #
 # Main
 #
-
 # Make a new player object that is currently in the 'outside' room.
+player_name = input("Enter your name: ")
+player_one = Player(player_name, room['outside'])
+
+start_menu = [
+    {
+        "type": "list",
+        "name": "start",
+        "message": f"Hello, {player_one.name}! Would you like to play a game?",
+        "choices": ["Start", "Quit"]
+    }
+]
+
+main_menu = [
+    {
+        "type": "list",
+        "name": "menu",
+        "message": f"{player_one.name}, What would you like to do?",
+        "choices": ["Move", "Look", "Quit"] 
+    }
+]
+
+direction_menu = [
+    {
+        "type": "list", 
+        "name": "direction",
+        "message": "Which direction",
+        "choices": ["North", "South", "East", "West", "Back to Menu"],  
+    }
+]
+
+command = prompt(start_menu)["start"]
+direction = ""
 
 # Write a loop that:
 #
@@ -49,3 +85,51 @@ room['treasure'].s_to = room['narrow']
 # Print an error message if the movement isn't allowed.
 #
 # If the user enters "q", quit the game.
+while not command == "Quit":
+    os.system("cls")
+    print(Fore.LIGHTCYAN_EX + f"{player_one.name} " + Fore.RESET + f"moved {direction}")
+
+    command = prompt(main_menu)["menu"]
+
+    if command == "Start":
+        os.system("cls")
+        command = prompt(main_menu)["menu"]
+
+    if command == "Look":
+        print(Fore.LIGHTCYAN_EX + f"{player_one.name} " + Fore.RESET + "is in the " + Fore.GREEN + f"{player_one.location.name}")
+        print(Fore.YELLOW + f"{player_one.location}")
+
+        command = prompt(main_menu)["menu"]
+
+    if command == "Move":
+        direction = prompt(direction_menu)["direction"]
+        if direction == "North":
+            try:
+                player_one.location = player_one.location.n_to
+            except:
+                print("There is nowhere to go here!")
+                direction = prompt(direction_menu)["direction"]
+        elif direction == "East":
+            try:
+                player_one.location = player_one.location.e_to
+            except:
+                print("There is nowhere to go here!")
+                direction = prompt(direction_menu)["direction"]
+        elif direction == "South":
+            try:
+                player_one.location = player_one.location.s_to
+            except:
+                print("There is nowhere to go here!")
+                direction = prompt(direction_menu)["direction"]
+        elif direction == "West":
+            try:
+                player_one.location = player_one.location.w_to
+            except:
+                print("There is nowhere to go here!")
+                direction = prompt(direction_menu)["direction"]
+        elif direction == "Back to Menu":
+            direction = ""
+            command = prompt(main_menu)["menu"]
+
+os.system("cls")
+print(Fore.RED + f"Goodbye {player_one.name}")
